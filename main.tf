@@ -10,14 +10,16 @@ terraform {
     key = "state"
     workspace_key_prefix="dtc_class"
     region="us-east-1"
-    profile="default"
+    access_key =""
+    secret_key=""
   }
   
 }
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "default"
+  access_key =""
+  secret_key=""
 }
 
 resource "aws_instance" "dtc_ec2" {
@@ -25,6 +27,7 @@ resource "aws_instance" "dtc_ec2" {
   instance_type = "t2.micro"
   key_name = "dtc_class1"
   tags = {
-    Name = "test_instance1"
+    Name = "uat instance"
+    Env = "uat"
   }
 }
