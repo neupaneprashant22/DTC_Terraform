@@ -1,0 +1,6 @@
+{
+    "instance_type":"t2.micro",
+    "env":"dev1",
+    "vpc_id":"vpc-0cfa6197ea89595f2",
+    "ebs_volume":"8"
+}

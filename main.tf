@@ -9,25 +9,58 @@ terraform {
     bucket = "dtc-terraform-states"
     key = "state"
     workspace_key_prefix="dtc_class"
-    region="us-east-1"
-    access_key =""
-    secret_key=""
+    region= "us-east-1"
+    access_key ="AKIAQ5KY5BNQ3RUH7SCE"
+    secret_key="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"
   }
   
 }
 
 provider "aws" {
-  region  = "us-east-1"
-  access_key =""
-  secret_key=""
+  region  = var.aws_region
+  access_key ="AKIAQ5KY5BNQ3RUH7SCE"
+  secret_key="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"
 }
 
+data "aws_ami" "ubuntu"{
+  most_recent=true 
+  filter{
+    name="name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server-*"]
+  }
+   filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+  owners=["099720109477"]
+}
 resource "aws_instance" "dtc_ec2" {
-  ami           = "ami-0a0e5d9c7acc336f1"
-  instance_type = "t2.micro"
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = var.instance_type
   key_name = "dtc_class1"
+  vpc_security_group_ids=[aws_security_group.dtc_sg1.id]
   tags = {
-    Name = "uat instance"
-    Env = "uat"
+    Name = "${var.env}-instance"
+    Env = var.env
   }
 }
+
+resource "aws_security_group" "dtc_sg1"{
+  vpc_id=var.vpc_id
+  name="dtc vpc1"
+  egress{
+    from_port=0
+    to_port=0
+    protocol ="-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress{
+    from_port=22
+    to_port=22
+    protocol ="tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+  
+
