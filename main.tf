@@ -10,16 +10,16 @@ terraform {
     key = "state"
     workspace_key_prefix="dtc_class"
     region= "us-east-1"
-    access_key ="AKIAQ5KY5BNQ3RUH7SCE"
-    secret_key="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"
+    access_key =""
+    secret_key=""
   }
   
 }
 
 provider "aws" {
   region  = var.aws_region
-  access_key ="AKIAQ5KY5BNQ3RUH7SCE"
-  secret_key="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"
+  access_key =""
+  secret_key=""
 }
 
 data "aws_ami" "ubuntu"{
