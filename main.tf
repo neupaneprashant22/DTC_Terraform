@@ -62,5 +62,25 @@ resource "aws_security_group" "dtc_sg1"{
     cidr_blocks = ["0.0.0.0/0"]
   }
 }
+
+data "aws_instances" "dev_instance"{
+  filter{
+    name="tag:Env"
+    values=["dev"]
+  }
+}
+output "instance_ids" {
+  value       = tolist([for id in data.aws_instances.dev_instance.ids : id])
+}
+
+output "sg_id"{
+  value=aws_security_group.dtc_sg1.id
+}
+
+
+
+
+
+
   
 
